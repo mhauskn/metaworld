@@ -117,12 +117,13 @@ class SawyerDoorEnvV2(SawyerXYZEnv):
         hand = obs[:3]
         door = obs[4:7] + np.array([-0.05, 0, 0])
 
+        threshold = 0.10
         # floor is a 3D funnel centered on the door handle
         radius = np.linalg.norm(hand[:2] - door[:2])
-        if radius <= 0.12:
+        if radius <= threshold:
             floor = 0.0
         else:
-            floor = 0.04 * np.log(radius - 0.12) + 0.4
+            floor = 0.04 * np.log(radius - threshold) + 0.4
         # prevent the hand from running into the handle prematurely by keeping
         # it above the floor
         above_floor = 1.0 if hand[2] >= floor else reward_utils.tolerance(
@@ -133,8 +134,8 @@ class SawyerDoorEnvV2(SawyerXYZEnv):
         )
         # move the hand to a position between the handle and the main door body
         in_place = reward_utils.tolerance(
-            np.linalg.norm(hand - door - np.array([0.06, 0.02, 0.2])),
-            bounds=(0, 0.12),
+            np.linalg.norm(hand - door - np.array([0.06, 0.02, 0.0])),
+            bounds=(0, threshold),
             margin=0.5,
             sigmoid='long_tail',
         )
@@ -154,7 +155,7 @@ class SawyerDoorEnvV2(SawyerXYZEnv):
         reward_grab = SawyerDoorEnvV2._reward_grab_effort(actions)
         reward_steps = SawyerDoorEnvV2._reward_pos(obs, self._target_pos)
 
-        step_weights = [1, 2]
+        step_weights = [1.0, 4.0]
         reward = sum([
             w * r for w, r in zip(step_weights, reward_steps)
         ]) / sum(step_weights)
