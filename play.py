@@ -19,6 +19,7 @@ def run(env, task_iter):
         env.render(mode='human')
         a = viewer.get_user_action()
         obs, reward, done, info = env.step(a)
+        time.sleep(.075)
         display_dict = {
             'Task Name': task.env_name,
             'Step': step,
@@ -42,7 +43,7 @@ def run(env, task_iter):
 
 
 if __name__ == "__main__":
-    task_name = 'push-v1'
-    ml1 = metaworld.ML1(task_name)
+    task_name = 'handle-press-side-v2'
+    ml1 = metaworld.V2(task_name)
     env = ml1.train_classes[task_name]()
     run(env, iter(ml1.train_tasks))

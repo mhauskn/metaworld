@@ -113,6 +113,23 @@ def _ml1_env_names():
     assert len(tasks) == 50
     return tasks
 
+class V2(Benchmark):
+
+    ENV_NAMES = _ml1_env_names()
+
+    def __init__(self, env_name):
+        super().__init__()
+        cls = _env_dict.ALL_V2_ENVIRONMENTS[env_name]
+        args_kwargs = _env_dict.V2_ARGS_KWARGS[env_name]
+        self._train_classes = OrderedDict([(env_name, cls)])
+        self._test_classes = self._train_classes
+        self._train_ = OrderedDict([(env_name, cls)])
+        self._train_tasks = _make_tasks(self._train_classes,
+                                        {env_name: args_kwargs},
+                                        _ML_OVERRIDE)
+        self._test_tasks = _make_tasks(self._test_classes,
+                                        {env_name: args_kwargs},
+                                        _ML_OVERRIDE)
 
 class ML1(Benchmark):
 

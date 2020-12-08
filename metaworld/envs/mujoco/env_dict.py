@@ -225,6 +225,13 @@ EASY_MODE_CLS_DICT = OrderedDict((
     ('window-open-v1', SawyerWindowOpenEnv),
     ('window-close-v1', SawyerWindowCloseEnv)),)
 
+V2_ARGS_KWARGS = {
+    key: dict(args=[],
+              kwargs={
+                  'task_id': list(ALL_V2_ENVIRONMENTS.keys()).index(key)
+              })
+    for key, _ in ALL_V2_ENVIRONMENTS.items()
+}
 
 EASY_MODE_ARGS_KWARGS = {
     key: dict(args=[],
