@@ -126,10 +126,10 @@ class V2(Benchmark):
         self._train_ = OrderedDict([(env_name, cls)])
         self._train_tasks = _make_tasks(self._train_classes,
                                         {env_name: args_kwargs},
-                                        _ML_OVERRIDE)
+                                        _MT_OVERRIDE)
         self._test_tasks = _make_tasks(self._test_classes,
                                         {env_name: args_kwargs},
-                                        _ML_OVERRIDE)
+                                        _MT_OVERRIDE)
 
 class ML1(Benchmark):
 

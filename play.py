@@ -43,7 +43,7 @@ def run(env, task_iter):
 
 
 if __name__ == "__main__":
-    task_name = 'handle-press-side-v2'
+    task_name = 'reach-v2'
     ml1 = metaworld.V2(task_name)
     env = ml1.train_classes[task_name]()
     run(env, iter(ml1.train_tasks))
