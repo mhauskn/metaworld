@@ -6,6 +6,7 @@ from gym.utils import seeding
 import numpy as np
 from os import path
 import gym
+from metaworld.envs.mujoco.mw_viewer import MwViewer
 
 try:
     import mujoco_py
@@ -128,7 +129,7 @@ class MujocoEnv(gym.Env, abc.ABC):
         self.viewer = self._viewers.get(mode)
         if self.viewer is None:
             if mode == 'human':
-                self.viewer = mujoco_py.MjViewer(self.sim)
+                self.viewer = MwViewer(self.sim)
             self.viewer_setup()
             self._viewers[mode] = self.viewer
         self.viewer_setup()
