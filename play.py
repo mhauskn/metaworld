@@ -30,12 +30,11 @@ def run(env, task_iter):
             display_dict["obs_{}".format(idx)] = obs_feat
         viewer.display_info(display_dict)
         if viewer.newtask_requested:
+            viewer.newtask_requested = False
+            break
+        if done or env.curr_path_length >= env.max_path_length or viewer.reset_requested:
             task = next(task_iter)
             env.set_task(task)
-            env.reset()
-            step = 0
-            viewer.newtask_requested = False            
-        if done or env.curr_path_length >= env.max_path_length or viewer.reset_requested:
             env.reset()
             viewer.reset_requested = False
             step = 0
@@ -43,7 +42,9 @@ def run(env, task_iter):
 
 
 if __name__ == "__main__":
-    task_name = 'reach-v2'
-    ml1 = metaworld.V2(task_name)
-    env = ml1.train_classes[task_name]()
-    run(env, iter(ml1.train_tasks))
+    v2_envs = list(metaworld.envs.mujoco.env_dict.ALL_V2_ENVIRONMENTS.keys())
+    random.shuffle(v2_envs)
+    for task_name in v2_envs:
+        ml1 = metaworld.V2(task_name)
+        env = ml1.train_classes[task_name]()
+        run(env, iter(ml1.train_tasks))
